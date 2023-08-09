@@ -3,6 +3,9 @@
 import os
 import asyncio
 import shlex
+import re
+import sys
+from urllib.parse import unquote_plus
 from typing import Tuple
 from html_telegraph_poster import TelegraphPoster
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -57,7 +60,8 @@ async def mediainfo(message: Message):
     if not reply:
         process = await message.edit("`Processing`")
         url_ = message.text.split(" ",1)[1]
-        output_ = await runcmd(f'mediainfo "{url_}"')
+        useurl_ = unquote_plus(url_)
+        output_ = await runcmd(f'mediainfo "{useurl_}"')
         out = None
         if len(output_) != 0:
             out = output_[0]
